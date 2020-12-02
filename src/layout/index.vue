@@ -1,10 +1,11 @@
 <template>
-  <div class="layout">
-    <h2>header</h2>
-    <h2>sider</h2>
-    <!-- 子路由出口 -->
-    <router-view />
-  </div>
+  <el-container>
+    <el-aside width="200px">Aside</el-aside>
+    <el-container>
+      <el-header>Header</el-header>
+      <el-main>Main</el-main>
+    </el-container>
+  </el-container>
 </template>
 
 <script lang="ts">
@@ -16,4 +17,20 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
+.el-container {
+  min-height: 100vh;
+  min-width: 980px;
+}
+
+.el-header {
+  background-color: #b3c0d1;
+}
+
+.el-aside {
+  background-color: #d3dce6;
+}
+
+.el-main {
+  background-color: #e9eef3;
+}
 </style>

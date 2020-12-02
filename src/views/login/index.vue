@@ -8,7 +8,7 @@
         <el-input v-model="form.password"></el-input>
       </el-form-item>
       <el-form-item>
-        <el-button class="login-btn" type="primary" @click="onSubmit">登录</el-button>
+        <el-button class="login-btn" type="primary" :loading="isLoginLoading" @click="onSubmit">登录</el-button>
       </el-form-item>
     </el-form>
   </div>
@@ -26,12 +26,17 @@ export default Vue.extend({
       form: {
         phone: '18201288771',
         password: '111111'
-      }
+      },
+      isLoginLoading: false
     }
   },
   methods: {
     async onSubmit() {
       // 1. 表单验证
+
+      // 登录按钮 loading
+      this.isLoginLoading = true
+
       // 2. 验证通过 -> 提交表单
       const { data } = await request({
         method: 'POST',
@@ -48,6 +53,9 @@ export default Vue.extend({
       // 成功：跳转到首页
       this.$router.push({ name: 'home' })
       this.$message.success('登陆成功')
+
+      // 结束登录按钮的 loading
+      this.isLoginLoading = false
     }
   }
 })

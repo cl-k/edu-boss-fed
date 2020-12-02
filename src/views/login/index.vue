@@ -37,14 +37,17 @@ export default Vue.extend({
         method: 'POST',
         url: '/front/user/login',
         headers: { 'content-type': 'application/x-www-form-urlencoded' },
-        data: qs.stringify(this.form) // axios 默认发送的是 application/json 格式的数据,这里需要转换
+        data: qs.stringify(this.form) // axios 默认发送的是 application/json 格式的数据,所以这里需要转换
       })
 
-      console.log(data)
       // 3. 处理请求结果
-      //    成功：跳转到首页
-      //    失败：给出提示
-      console.log('submit!')
+      if (data.state !== 1) {
+        // 失败：给出提示
+        return this.$message.error(data.message)
+      }
+      // 成功：跳转到首页
+      this.$router.push({ name: 'home' })
+      this.$message.success('登陆成功')
     }
   }
 })

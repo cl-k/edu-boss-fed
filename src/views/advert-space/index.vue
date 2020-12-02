@@ -1,16 +1,12 @@
 <template>
-  <div id="app">
-    <h1>App</h1>
-    <!-- 根路由出口 -->
-    <router-view />
-  </div>
+  <div class="advert-space">广告位管理</div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
 
 export default Vue.extend({
-  name: 'App'
+  name: 'AdvertSpaceIndex'
 })
 </script>
 

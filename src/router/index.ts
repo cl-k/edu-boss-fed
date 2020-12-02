@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter, { RouteConfig } from 'vue-router'
 import Layout from '@/layout/index.vue'
+import store from '@/store'
 
 Vue.use(VueRouter)
 
@@ -9,63 +10,117 @@ const routes: Array<RouteConfig> = [
   {
     path: '/login',
     name: 'login',
-    component: () => import(/* webpackChunkName: 'login' */ '@/views/login/index.vue')
+    component: () =>
+      import(/* webpackChunkName: 'login' */ '@/views/login/index.vue')
   },
   {
     path: '/',
     component: Layout,
+    meta: {
+      requiresAuth: true // 自定义数据
+    }, // meta 默认就是一个空对象
     children: [
       {
         path: '', // 默认子路由
         name: 'home',
-        component: () => import(/* webpackChunkName: 'home' */ '@/views/home/index.vue')
+        component: () =>
+          import(/* webpackChunkName: 'home' */ '@/views/home/index.vue')
       },
       {
         path: '/role',
         name: 'role',
-        component: () => import(/* webpackChunkName: 'role' */ '@/views/role/index.vue')
+        component: () =>
+          import(/* webpackChunkName: 'role' */ '@/views/role/index.vue')
       },
       {
         path: '/menu',
         name: 'menu',
-        component: () => import(/* webpackChunkName: 'menu' */ '@/views/menu/index.vue')
+        component: () =>
+          import(/* webpackChunkName: 'menu' */ '@/views/menu/index.vue'),
+        meta: {
+          requiresAuth: true
+        }
       },
       {
         path: '/resource',
         name: 'resource',
-        component: () => import(/* webpackChunkName: 'resource' */ '@/views/resource/index.vue')
+        component: () =>
+          import(
+            /* webpackChunkName: 'resource' */ '@/views/resource/index.vue'
+          )
       },
       {
         path: '/course',
         name: 'course',
-        component: () => import(/* webpackChunkName: 'course' */ '@/views/course/index.vue')
+        component: () =>
+          import(/* webpackChunkName: 'course' */ '@/views/course/index.vue')
       },
       {
         path: '/user',
         name: 'user',
-        component: () => import(/* webpackChunkName: 'user' */ '@/views/user/index.vue')
+        component: () =>
+          import(/* webpackChunkName: 'user' */ '@/views/user/index.vue')
       },
       {
         path: '/advert',
         name: 'advert',
-        component: () => import(/* webpackChunkName: 'advert' */ '@/views/advert/index.vue')
+        component: () =>
+          import(/* webpackChunkName: 'advert' */ '@/views/advert/index.vue'),
+        meta: {
+          requiresAuth: true
+        }
       },
       {
         path: '/advert-space',
         name: 'advert-space',
-        component: () => import(/* webpackChunkName: 'advertSpace' */ '@/views/advert-space/index.vue')
+        component: () =>
+          import(
+            /* webpackChunkName: 'advertSpace' */ '@/views/advert-space/index.vue'
+          )
       }
     ]
   },
   {
     path: '*',
     name: '404',
-    component: () => import(/* webpackChunkName: '404' */ '@/views/error-page/404.vue')
+    component: () =>
+      import(/* webpackChunkName: '404' */ '@/views/error-page/404.vue')
   }
 ]
 
 const router = new VueRouter({
   routes
+})
+
+// 全局前置守卫：任何页面的访问都要经过这里
+// to: 要去哪里的路由信息
+// from: 从哪里来的路由信息
+// next： 通行的标志
+router.beforeEach((to, from, next) => {
+  // console.log('to => ', to)
+  // console.log('from => ', from)
+
+  // to.matched 是一个数组（匹配到的是路由记录）
+  if (to.matched.some(record => record.meta.requiresAuth)) {
+    if (!store.state.user) {
+      // 没有登陆状态，跳转到登录页面
+      next({
+        name: 'login'
+      })
+    } else {
+      next()
+    }
+  } else {
+    next() // 允许通过
+  }
+
+  // // 路由守卫中一定要调用 next，否则页面无法展示
+  // next()
+
+  // 这种方式太死板
+  // if (to.path !== '/login') {
+  //   // 校验登陆状态
+  // }
 })
 
 export default router

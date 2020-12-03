@@ -45,6 +45,7 @@ request.interceptors.request.use(function (config) {
 
 // 响应拦截器
 let isRefreshing = false // 控制刷新 token 的状态
+let requests = [] // 存储刷新 token 期间过来的 401 请求
 request.interceptors.response.use(function (response) { // 状态码为 2xx 都会进入这里
   // 如果是自定义错误状态码，错误处理就写到这里
   return response
@@ -63,6 +64,7 @@ request.interceptors.response.use(function (response) { // 状态码为 2xx 都�
         return Promise.reject(error)
       }
 
+      // 刷新 token
       if (!isRefreshing) {
         isRefreshing = true // 开启刷新状态
         // 如果有 refresh_token 则尝试使用 refresh_token 获取新的 access_token
@@ -71,8 +73,13 @@ request.interceptors.response.use(function (response) { // 状态码为 2xx 都�
             throw new Error('刷新 Token 失败')
           }
 
+          // 刷新 token 成功了
           store.commit('setUser', res.data.content)
-          // 把本次失败的请求重新发出去
+          // 把 requests 队列中的请求重新发出去
+          requests.forEach(cb => cb())
+          // 重置 requests 数组
+          requests = []
+          // 把第一次失败的请求发出
           return request(error.config)
         }).catch(err => {
           console.log(err)
@@ -86,7 +93,12 @@ request.interceptors.response.use(function (response) { // 状态码为 2xx 都�
         })
       }
 
-      return
+      // 刷新状态下，把请求挂起，放到 requests 数组中
+      return new Promise(resolve => {
+        requests.push(() => {
+          resolve(request(error.config))
+        })
+      })
     } else if (status === 403) {
       Message.error('没有权限，请联系管理员')
     } else if (status === 404) {

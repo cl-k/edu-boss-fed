@@ -65,12 +65,14 @@
       </el-table>
     </el-card>
 
-    <el-dialog
-      title="添加角色"
-      :visible.sync="dialogVisible"
-      width="30%"
-    >
-      <create-or-edit @success="onSuccess" @cancel="dialogVisible = false"/>
+    <el-dialog :title="isEdit ? '编辑角色' : '添加角色'" :visible.sync="dialogVisible" width="30%">
+      <create-or-edit
+        v-if="dialogVisible"
+        :role-id="roleId"
+        :is-edit="isEdit"
+        @success="onSuccess"
+        @cancel="dialogVisible = false"
+      />
     </el-dialog>
   </div>
 </template>

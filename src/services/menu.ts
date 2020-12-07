@@ -30,3 +30,10 @@ export const getEditMenuInfo = (id = -1) => {
     params: { id }
   })
 }
+
+export const getAllMenus = () => {
+  return request({
+    method: 'GET',
+    url: '/boss/menu/getAll'
+  })
+}

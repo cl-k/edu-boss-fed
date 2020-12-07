@@ -44,7 +44,7 @@
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="onSubmit">提交</el-button>
-          <el-button>取消</el-button>
+          <el-button v-if="!isEdit">重置</el-button>
         </el-form-item>
       </el-form>
     </el-card>
@@ -56,7 +56,7 @@ import Vue from 'vue'
 import { createOrUpdateMenu, getEditMenuInfo } from '@/services/menu'
 
 export default Vue.extend({
-  name: 'CreateOrEditMenu',
+  name: 'MenuCreateOrEdit',
   props: {
     isEdit: {
       type: Boolean,
@@ -82,7 +82,10 @@ export default Vue.extend({
   },
   methods: {
     async loadMenuInfo() {
-      const { data } = await getEditMenuInfo()
+      const { data } = await getEditMenuInfo(this.$route.params.id || -1)
+      if (data.data.menuInfo) {
+        this.form = data.data.menuInfo
+      }
       if (data.code === '000000') {
         this.parentMenuList = data.data.parentMenuList
       }

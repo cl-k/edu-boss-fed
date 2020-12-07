@@ -42,6 +42,15 @@ const routes: Array<RouteConfig> = [
         }
       },
       {
+        path: '/menu/create',
+        name: 'menu-create',
+        component: () =>
+          import(/* webpackChunkName: 'menuCreate' */ '@/views/menu/create.vue'),
+        meta: {
+          requiresAuth: true
+        }
+      },
+      {
         path: '/resource',
         name: 'resource',
         component: () =>
@@ -106,7 +115,8 @@ router.beforeEach((to, from, next) => {
       // 没有登陆状态，跳转到登录页面
       next({
         name: 'login',
-        query: { // 通过 url 传递查询字符串参数
+        query: {
+          // 通过 url 传递查询字符串参数
           redirect: to.fullPath // 把登录成功需要返回的页面告诉登录页面
         }
       })

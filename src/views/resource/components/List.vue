@@ -31,7 +31,7 @@
           </el-form-item>
         </el-form>
       </div>
-      <el-table :data="resources" style="width: 100%; margin-bottom: 20px">
+      <el-table :data="resources" style="width: 100%; margin-bottom: 20px" v-loading="isLoading">
         <el-table-column type="index" label="编号" width="100" />
         <el-table-column prop="name" label="资源名称" width="180">
         </el-table-column>
@@ -62,6 +62,7 @@
         :page-size="form.size"
         layout="total, sizes, prev, pager, next, jumper"
         :total="totalCount"
+        :disabled="isLoading"
       >
       </el-pagination>
     </el-card>
@@ -71,6 +72,8 @@
 <script lang="ts">
 import Vue from 'vue'
 import { getResourcePages } from '@/services/resource'
+import { getResourceCategories } from '@/services/resource-category'
+import { Form } from 'element-ui'
 
 export default Vue.extend({
   name: 'ResourceList',
@@ -84,22 +87,34 @@ export default Vue.extend({
         size: 5, // 每页大小
         categoryId: null // 资源分类
       },
-      totalCount: 0
+      totalCount: 0,
+      resourceCategories: [], // 资源分类列表
+      isLoading: true // 加载状态
     }
   },
 
   created() {
     this.loadResources()
+    this.loadResourceCategories()
   },
 
   methods: {
+    async loadResourceCategories() {
+      const { data } = await getResourceCategories()
+      this.resourceCategories = data.data
+    },
+
     async loadResources() {
+      this.isLoading = true // 展示加载中状态
       const { data } = await getResourcePages(this.form)
       this.resources = data.data.records
       this.totalCount = data.data.total
+      this.isLoading = false // 关闭加载中状态
     },
+
     onSubmit() {
-      console.log('submit!')
+      this.form.current = 1 // 筛选查询从第一页开始
+      this.loadResources()
     },
 
     handleEdit(item: any) {
@@ -119,6 +134,12 @@ export default Vue.extend({
     handleCurrentChange(val: number) {
       // 请求获取对应页码的数据
       this.form.current = val // 修改要查询的页码
+      this.loadResources()
+    },
+
+    onReset() {
+      (this.$refs.form as Form).resetFields()
+      this.form.current = 1 // 重置回到第一页
       this.loadResources()
     }
   }

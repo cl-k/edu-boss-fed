@@ -45,7 +45,16 @@ const routes: Array<RouteConfig> = [
         path: '/menu/create',
         name: 'menu-create',
         component: () =>
-          import(/* webpackChunkName: 'menuCreate' */ '@/views/menu/create.vue'),
+          import(/* webpackChunkName: 'menuCreateEdit' */ '@/views/menu/create.vue'),
+        meta: {
+          requiresAuth: true
+        }
+      },
+      {
+        path: '/menu/:id/edit',
+        name: 'menu-edit',
+        component: () =>
+          import(/* webpackChunkName: 'menuCreateEdit' */ '@/views/menu/edit.vue'),
         meta: {
           requiresAuth: true
         }

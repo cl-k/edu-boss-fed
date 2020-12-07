@@ -19,7 +19,7 @@
         </el-table-column>
         <el-table-column label="操作" min-width="150">
           <template slot-scope="scope">
-            <el-button size="mini" @click="handleEdit(scope.$index, scope.row)"
+            <el-button size="mini" @click="handleEdit(scope.row)"
               >编辑</el-button
             >
             <el-button
@@ -58,8 +58,13 @@ export default Vue.extend({
         this.menus = data.data
       }
     },
-    handleEdit(index: number, row: object) {
-      console.log(index, row)
+    handleEdit(item: any) {
+      this.$router.push({
+        name: 'menu-edit',
+        params: {
+          id: item.id
+        }
+      })
     },
     handleDelete(item: any) {
       this.$confirm('确认删除吗？', '删除提示', {})

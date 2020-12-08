@@ -33,6 +33,18 @@ const routes: Array<RouteConfig> = [
           import(/* webpackChunkName: 'role' */ '@/views/role/index.vue')
       },
       {
+        path: '/role/:roleId/alloc-menu',
+        name: 'alloc-menu',
+        component: () =>
+          import(
+            /* webpackChunkName: 'allocMenu' */ '@/views/role/alloc-menu.vue'
+          ),
+        meta: {
+          requiresAuth: true
+        },
+        props: true // 将路由路径参数映射到组件的 props 数据中，前提是路由动态路径参数名称与子组件的 props 参数一致
+      },
+      {
         path: '/menu',
         name: 'menu',
         component: () =>
@@ -45,7 +57,9 @@ const routes: Array<RouteConfig> = [
         path: '/menu/create',
         name: 'menu-create',
         component: () =>
-          import(/* webpackChunkName: 'menuCreateEdit' */ '@/views/menu/create.vue'),
+          import(
+            /* webpackChunkName: 'menuCreateEdit' */ '@/views/menu/create.vue'
+          ),
         meta: {
           requiresAuth: true
         }
@@ -54,7 +68,9 @@ const routes: Array<RouteConfig> = [
         path: '/menu/:id/edit',
         name: 'menu-edit',
         component: () =>
-          import(/* webpackChunkName: 'menuCreateEdit' */ '@/views/menu/edit.vue'),
+          import(
+            /* webpackChunkName: 'menuCreateEdit' */ '@/views/menu/edit.vue'
+          ),
         meta: {
           requiresAuth: true
         }

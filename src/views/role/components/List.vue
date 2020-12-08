@@ -33,9 +33,9 @@
                       roleId: scope.row.id
                     }
                   })
-                "
-                >分配菜单</el-button
-              >
+                ">
+                分配菜单
+              </el-button>
               <el-button
                 type="text"
                 @click="
@@ -46,8 +46,9 @@
                     }
                   })
                 "
-                >分配资源</el-button
               >
+                分配资源
+              </el-button>
             </div>
             <div>
               <el-button type="text" @click="handleEdit(scope.row)"
@@ -65,7 +66,11 @@
       </el-table>
     </el-card>
 
-    <el-dialog :title="isEdit ? '编辑角色' : '添加角色'" :visible.sync="dialogVisible" width="30%">
+    <el-dialog
+      :title="isEdit ? '编辑角色' : '添加角色'"
+      :visible.sync="dialogVisible"
+      width="30%"
+    >
       <create-or-edit
         v-if="dialogVisible"
         :role-id="roleId"
@@ -97,7 +102,7 @@ export default Vue.extend({
         name: ''
       }, // 查询条件
       loading: false,
-      dialogVisible: true, // 控制添加/编辑角色的对话框显示和隐藏
+      dialogVisible: false, // 控制添加/编辑角色的对话框显示和隐藏
       roleId: null, // 编辑角色的 ID
       isEdit: false
     }

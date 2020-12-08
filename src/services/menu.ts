@@ -44,3 +44,20 @@ export const deleteMenu = (id: number) => {
     url: `/boss/menu/${id}`
   })
 }
+
+// 获取所有菜单并按层级展示
+export const getMenuNodeList = () => {
+  return request({
+    method: 'GET',
+    url: '/boss/menu/getMenuNodeList'
+  })
+}
+
+// 给角色分配菜单
+export const allocateRoleMenus = (data: any) => {
+  return request({
+    method: 'POST',
+    url: '/boss/menu/allocateRoleMenus',
+    data
+  })
+}

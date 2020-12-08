@@ -9,6 +9,7 @@
         :data="menus"
         node-key="id"
         :props="defaultProps"
+        :default-checked-keys="checkedKeys"
         show-checkbox
         default-expand-all
       ></el-tree>
@@ -22,7 +23,11 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import { getMenuNodeList, allocateRoleMenus } from '@/services/menu'
+import {
+  getMenuNodeList,
+  allocateRoleMenus,
+  getRoleMenus
+} from '@/services/menu'
 import { Tree } from 'element-ui'
 
 export default Vue.extend({
@@ -39,13 +44,45 @@ export default Vue.extend({
       defaultProps: {
         children: 'subMenuList',
         label: 'name'
-      }
+      },
+      checkedKeys: []
     }
   },
   created() {
     this.loadMenus()
+    this.loadRoleMenus()
   },
   methods: {
+    async loadRoleMenus() {
+      const { data } = await getRoleMenus(this.roleId)
+      this.getCheckedKeys(data.data)
+    },
+
+    getCheckedKeys(menus: any) {
+      // 老版本的接口，父级在没有全选的情况下为 true
+      // menus.forEach((menu: any) => {
+      //   if (menu.selected) {
+      //     // this.checkedKeys.push(menu.id as never) // 试图不更新
+      //     this.checkedKeys = [...this.checkedKeys, menu.id] as any
+      //   }
+
+      //   if (menu.subMenuList) {
+      //     this.getCheckedKeys(menu.subMenuList)
+      //   }
+      // })
+
+      // 父级在子级存在且只要有一个 ture 的时候就为 true
+      menus.forEach((menu: any) => {
+        if (menu.selected) {
+          if (menu.subMenuList) {
+            this.getCheckedKeys(menu.subMenuList)
+          } else {
+            this.checkedKeys = [...this.checkedKeys, menu.id] as any
+          }
+        }
+      })
+    },
+
     async loadMenus() {
       const { data } = await getMenuNodeList()
       this.menus = data.data

@@ -32,12 +32,19 @@ export const saveOrUpdateCourse = (data: any) => {
 }
 
 // 上传图片
-export const uploadCourseImage = (data: any) => {
+export const uploadCourseImage = (data: any, onUploadProgress: (progressEvent: any) => void) => {
   // 该接口要求的请求数据类型是：multipart/form-data
   // 所以需要提交 FormData 数据对象
   return request({
     method: 'POST',
     url: '/boss/course/upload',
-    data
+    data,
+    onUploadProgress
+    // HTML5 新增的上传响应事件：progress
+    // onUploadProgress (e: any) { // axios 对 progress 的封装
+    //   // console.log(e.loaded) // 已上传的数据大小
+    //   // console.log(e.total) // 上传文件的总大小
+    //   console.log(Math.floor(e.loaded / e.total * 100))
+    // }
   })
 }

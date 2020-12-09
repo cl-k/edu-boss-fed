@@ -48,9 +48,6 @@
         </div>
         <div v-show="activeStep === 1">
           <el-form-item label="课程封面">
-            <!--
-              upload 上传文件组件，它支持自动上传，只需要把上传需要参数配置一下就可以
-             -->
             <!-- <el-upload
               class="avatar-uploader"
               action="https://jsonplaceholder.typicode.com/posts/"
@@ -73,7 +70,7 @@
                 1. 它会给子组件传递一个名字加 value 的数据（Props）
                 2. 默认监听 input 事件，修改绑定的数据（自定义事件）
             -->
-            <course-image v-model="course.courseListImg" />
+            <course-image :limit="10" v-model="course.courseListImg" />
           </el-form-item>
           <el-form-item label="解锁封面">
             <course-image v-model="course.courseImgUrl" />

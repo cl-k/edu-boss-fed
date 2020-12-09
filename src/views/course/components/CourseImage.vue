@@ -1,20 +1,21 @@
 <template>
   <div class="course-image">
-    <!--
-      upload 上传文件组件，它支持自动上传，只需要把上传需要参数配置一下就可以
-    -->
+    <el-progress
+      v-if="isUploading"
+      type="circle"
+      :percentage="percentage"
+      :width="178"
+      :status="percentage === 100 ? 'success' : undefined"
+    ></el-progress>
     <el-upload
+      v-else
       class="avatar-uploader"
       action="#"
       :show-file-list="false"
       :before-upload="beforeAvatarUpload"
       :http-request="handleUpload"
     >
-      <img
-        v-if="value"
-        :src="value"
-        class="avatar"
-      />
+      <img v-if="value" :src="value" class="avatar" />
       <i v-else class="el-icon-plus avatar-uploader-icon"></i>
     </el-upload>
   </div>
@@ -35,6 +36,12 @@ export default Vue.extend({
       default: 2
     }
   },
+  data() {
+    return {
+      isUploading: false,
+      percentage: 0
+    }
+  },
   methods: {
     beforeAvatarUpload(file: any) {
       const isJPG = file.type === 'image/jpeg'
@@ -51,9 +58,14 @@ export default Vue.extend({
 
     async handleUpload(option: any) {
       // console.log(option)
+      this.isUploading = true
       const fd = new FormData()
       fd.append('file', option.file)
-      const { data } = await uploadCourseImage(fd)
+      const { data } = await uploadCourseImage(fd, e => {
+        this.percentage = Math.floor(e.loaded / e.total * 100)
+      })
+      this.isUploading = false
+      this.percentage = 0
       this.$emit('input', data.data.name)
     }
   }

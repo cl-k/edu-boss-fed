@@ -48,14 +48,17 @@
         </div>
         <div v-show="activeStep === 1">
           <el-form-item label="课程封面">
+            <!--
+              upload 上传文件组件，它支持自动上传，只需要把上传需要参数配置一下就可以
+             -->
             <el-upload
               class="avatar-uploader"
               action="https://jsonplaceholder.typicode.com/posts/"
               :show-file-list="false"
-              :on-success="handleAvatarSuccess"
               :before-upload="beforeAvatarUpload"
+              :http-request="handleUpload"
             >
-              <img v-if="imageUrl" :src="imageUrl" class="avatar" />
+              <img v-if="course.courseListImg" :src="course.courseListImg" class="avatar" />
               <i v-else class="el-icon-plus avatar-uploader-icon"></i>
             </el-upload>
           </el-form-item>
@@ -142,7 +145,7 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import { saveOrUpdateCourse } from '@/services/course'
+import { saveOrUpdateCourse, uploadCourseImage } from '@/services/course'
 
 export default Vue.extend({
   name: 'CourseCreate',
@@ -201,6 +204,7 @@ export default Vue.extend({
     handleAvatarSuccess(res: any, file: any) {
       this.imageUrl = URL.createObjectURL(file.raw)
     },
+
     beforeAvatarUpload(file: any) {
       const isJPG = file.type === 'image/jpeg'
       const isLt2M = file.size / 1024 / 1024 < 2
@@ -212,6 +216,14 @@ export default Vue.extend({
         this.$message.error('上传头像图片大小不能超过 2MB!')
       }
       return isJPG && isLt2M
+    },
+
+    async handleUpload(option: any) {
+      // console.log(option)
+      const fd = new FormData()
+      fd.append('file', option.file)
+      const { data } = await uploadCourseImage(fd)
+      this.course.courseListImg = data.data.name
     }
   }
 })

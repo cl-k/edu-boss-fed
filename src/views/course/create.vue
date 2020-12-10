@@ -202,7 +202,7 @@ export default Vue.extend({
           position: '',
           description: ''
         },
-        courseDescriptionMarkDown: '<h1>Hello</h1>',
+        courseDescriptionMarkDown: '',
         price: 0,
         discounts: 0,
         priceTag: '',

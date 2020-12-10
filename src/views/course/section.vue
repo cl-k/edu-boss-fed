@@ -12,6 +12,7 @@
         :data="sections"
         :props="defaultProps"
         draggable
+        :allow-drop="handleAllowDrop"
       >
         <div class="inner" slot-scope="{ node, data }">
           <span>{{ node.label }}</span>
@@ -268,6 +269,14 @@ export default Vue.extend({
       this.lesson = lesson
       this.lesson.sectionName = section.sectionName
       this.isAddLessonShow = true
+    },
+
+    handleAllowDrop(draggingNode: any, dropNode: any, type: any) {
+      // draggingNode 拖动的节点
+      // dragNode 放置的目标节点
+      // type: 'prev'、'inner' 和 'next'，分别表示放置在目标节点前、插入至目标节点和放置在目标节点后
+      console.log(draggingNode, dropNode, type)
+      return draggingNode.data.sectionId === dropNode.data.sectionId && type !== 'inner'
     }
   }
 })

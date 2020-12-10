@@ -2,7 +2,21 @@
   <div class="course-setion">
     <el-card>
       <div slot="header">课程名称</div>
-      <el-tree :data="sections" :props="defaultProps" draggable></el-tree>
+      <el-tree :data="sections" :props="defaultProps" draggable>
+        <div class="inner" slot-scope="{ node, data }">
+          <span>{{ node.label }}</span>
+          <span v-if="data.sectionName" class="actions">
+            <el-button>编辑</el-button>
+            <el-button type="primary">添加课时</el-button>
+            <el-button>状态</el-button>
+          </span>
+          <span v-else class="actions">
+            <el-button>编辑</el-button>
+            <el-button>上传视频</el-button>
+            <el-button>状态</el-button>
+          </span>
+        </div>
+      </el-tree>
     </el-card>
   </div>
 </template>
@@ -24,7 +38,7 @@ export default Vue.extend({
       sections: [],
       defaultProps: {
         children: 'lessonDTOS',
-        label (data: any) {
+        label(data: any) {
           return data.sectionName || data.theme
         }
       }
@@ -43,4 +57,16 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
+.inner {
+  flex: 1;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid #ebeef5;
+}
+
+::v-deep .el-tree-node__content {
+  height: auto;
+}
 </style>

@@ -13,6 +13,7 @@
         :props="defaultProps"
         draggable
         :allow-drop="handleAllowDrop"
+        @node-drop="handleSort"
       >
         <div class="inner" slot-scope="{ node, data }">
           <span>{{ node.label }}</span>
@@ -275,8 +276,37 @@ export default Vue.extend({
       // draggingNode 拖动的节点
       // dragNode 放置的目标节点
       // type: 'prev'、'inner' 和 'next'，分别表示放置在目标节点前、插入至目标节点和放置在目标节点后
-      console.log(draggingNode, dropNode, type)
-      return draggingNode.data.sectionId === dropNode.data.sectionId && type !== 'inner'
+      // console.log(draggingNode, dropNode, type)
+      return (
+        draggingNode.data.sectionId === dropNode.data.sectionId &&
+        type !== 'inner'
+      )
+    },
+
+    async handleSort(dragNode: any, dropNode: any, type: any, event: any) {
+      try {
+        await Promise.all(
+          dropNode.parent.childNodes.map((item: any, index: number) => {
+            if (dragNode.data.lessonDTOS) {
+              // 阶段
+              return saveOrUpdateSection({
+                id: item.data.id,
+                orderNum: index + 1
+              })
+            } else {
+              // 课时
+              return saveOrUpdateLesson({
+                id: item.data.id,
+                orderNum: index + 1
+              })
+            }
+          })
+        )
+        this.$message.success('排序成功')
+      } catch (error) {
+        console.log(error)
+        this.$message.error('排序失败')
+      }
     }
   }
 })

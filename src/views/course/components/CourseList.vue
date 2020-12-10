@@ -21,15 +21,10 @@
           </el-select>
         </el-form-item>
         <el-form-item>
-          <el-button
-            :disabled="loading"
-            @click="handleReset"
-          >重置</el-button>
-          <el-button
-            type="primary"
-            :disabled="loading"
-            @click="handleFilter"
-          >查询</el-button>
+          <el-button :disabled="loading" @click="handleReset">重置</el-button>
+          <el-button type="primary" :disabled="loading" @click="handleFilter"
+            >查询</el-button
+          >
         </el-form-item>
       </el-form>
     </el-card>
@@ -40,37 +35,25 @@
         <el-button
           style="float: right; margin-top: -5px"
           type="primary"
-          @click="$router.push({
-            name: 'course-create'
-          })"
-        >添加课程</el-button>
+          @click="
+            $router.push({
+              name: 'course-create'
+            })
+          "
+          >添加课程</el-button
+        >
       </div>
       <el-table
         :data="courses"
         v-loading="loading"
         style="width: 100%; margin-bottom: 20px"
       >
-        <el-table-column
-          prop="id"
-          label="ID"
-          width="50">
+        <el-table-column prop="id" label="ID" width="50"> </el-table-column>
+        <el-table-column prop="courseName" label="课程名称" width="120">
         </el-table-column>
-        <el-table-column
-          prop="courseName"
-          label="课程名称"
-          width="120">
-        </el-table-column>
-        <el-table-column
-          prop="price"
-          label="价格">
-        </el-table-column>
-        <el-table-column
-          prop="sortNum"
-          label="排序">
-        </el-table-column>
-        <el-table-column
-          prop="status"
-          label="上架状态">
+        <el-table-column prop="price" label="价格"> </el-table-column>
+        <el-table-column prop="sortNum" label="排序"> </el-table-column>
+        <el-table-column prop="status" label="上架状态">
           <template slot-scope="scope">
             <el-switch
               v-model="scope.row.status"
@@ -83,28 +66,30 @@
             />
           </template>
         </el-table-column>
-        <el-table-column
-          prop="price"
-          label="操作"
-          align="center"
-        >
+        <el-table-column prop="price" label="操作" align="center">
           <template slot-scope="scope">
             <el-button
-              @click="$router.push({
-                name: 'course-edit',
-                params: {
-                  courseId: scope.row.id
-                }
-              })"
-            >编辑</el-button>
+              @click="
+                $router.push({
+                  name: 'course-edit',
+                  params: {
+                    courseId: scope.row.id
+                  }
+                })
+              "
+              >编辑</el-button
+            >
             <el-button
-              @click="$router.push({
-                name: 'course-section',
-                params: {
-                  courseId: scope.row.id
-                }
-              })"
-            >内容管理</el-button>
+              @click="
+                $router.push({
+                  name: 'course-section',
+                  params: {
+                    courseId: scope.row.id
+                  }
+                })
+              "
+              >内容管理</el-button
+            >
           </template>
         </el-table-column>
       </el-table>
@@ -126,7 +111,7 @@ import { Form } from 'element-ui'
 
 export default Vue.extend({
   name: 'CourseList',
-  data () {
+  data() {
     return {
       filterParams: {
         currentPage: 1,
@@ -140,12 +125,12 @@ export default Vue.extend({
     }
   },
 
-  created () {
+  created() {
     this.loadCourses()
   },
 
   methods: {
-    async loadCourses () {
+    async loadCourses() {
       this.loading = true
       const { data } = await getQueryCourses(this.filterParams)
       data.data.records.forEach((item: any) => {
@@ -156,23 +141,23 @@ export default Vue.extend({
       this.loading = false
     },
 
-    handleCurrentChange (page: number) {
+    handleCurrentChange(page: number) {
       this.filterParams.currentPage = page
       this.loadCourses()
     },
 
-    handleFilter () {
+    handleFilter() {
       this.filterParams.currentPage = 1
       this.loadCourses()
     },
 
-    handleReset () {
-      (this.$refs.form as Form).resetFields()
+    handleReset() {
+      ;(this.$refs.form as Form).resetFields()
       this.filterParams.currentPage = 1
       this.loadCourses()
     },
 
-    async onStateChange (course: any) {
+    async onStateChange(course: any) {
       course.isStatusLoading = true
       const { data } = await changeState({
         courseId: course.id,

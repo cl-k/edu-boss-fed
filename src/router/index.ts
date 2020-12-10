@@ -96,6 +96,13 @@ const routes: Array<RouteConfig> = [
           import(/* webpackChunkName: 'courseCreate' */ '@/views/course/create.vue')
       },
       {
+        path: '/course/:courseId/edit',
+        name: 'course-edit',
+        component: () =>
+          import(/* webpackChunkName: 'courseEdit' */ '@/views/course/edit.vue'),
+        props: true
+      },
+      {
         path: '/user',
         name: 'user',
         component: () =>

@@ -15,9 +15,24 @@ export default Vue.extend({
       default: ''
     }
   },
+  data() {
+    return {
+      editor: null as any,
+      isFirst: true
+    }
+  },
   // 组件已经渲染好，可以初始化操作 DOM 了
   mounted() {
     this.initEditor()
+  },
+  watch: {
+    value (newValue, oldValue) {
+      if (this.isFirst) {
+        this.editor.txt.html(newValue)
+        this.isFirst = false
+      }
+      console.log(oldValue)
+    }
   },
   methods: {
     initEditor() {
@@ -28,7 +43,10 @@ export default Vue.extend({
         this.$emit('input', value)
       }
 
-      editor.config.customUploadImg = async function (resultFiles: any, insertImgFn: any) {
+      editor.config.customUploadImg = async function (
+        resultFiles: any,
+        insertImgFn: any
+      ) {
         // resultFiles 是 input 中选中的文件列表
         // insertImgFn 是获取图片 url 后，插入到编辑器的方法
 
@@ -41,9 +59,10 @@ export default Vue.extend({
       }
 
       editor.create()
+      this.editor = editor
 
       // 注意：设置初始化必须在 create 之后
-      editor.txt.html(this.value)
+      this.editor.txt.html(this.value)
     }
   }
 })

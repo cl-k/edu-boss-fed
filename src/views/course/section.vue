@@ -46,7 +46,8 @@
               @click="
                 $router.push({
                   name: 'course-vedio',
-                  params: { courseId }
+                  params: { courseId },
+                  query: { sectionId: node.parent.id, lessonId: data.id }
                 })
               "
               >上传视频</el-button

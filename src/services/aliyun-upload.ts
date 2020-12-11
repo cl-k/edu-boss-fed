@@ -31,7 +31,7 @@ export const aliyunTransCode = (data: any) => {
 }
 
 // 阿里云转码进度
-export const aliyunTransCodePercent = (lessonId: string | number) => {
+export const aliyunTransCodePercent = (lessonId: any) => {
   return request({
     method: 'GET',
     url: '/boss/course/upload/aliyunTransCodePercent.json',

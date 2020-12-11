@@ -93,20 +93,35 @@ const routes: Array<RouteConfig> = [
         path: '/course/create',
         name: 'course-create',
         component: () =>
-          import(/* webpackChunkName: 'courseCreate' */ '@/views/course/create.vue')
+          import(
+            /* webpackChunkName: 'courseCreate' */ '@/views/course/create.vue'
+          )
       },
       {
         path: '/course/:courseId/edit',
         name: 'course-edit',
         component: () =>
-          import(/* webpackChunkName: 'courseEdit' */ '@/views/course/edit.vue'),
+          import(
+            /* webpackChunkName: 'courseEdit' */ '@/views/course/edit.vue'
+          ),
         props: true
       },
       {
         path: '/course/:courseId/section',
         name: 'course-section',
         component: () =>
-          import(/* webpackChunkName: 'courseSection' */ '@/views/course/section.vue'),
+          import(
+            /* webpackChunkName: 'courseSection' */ '@/views/course/section.vue'
+          ),
+        props: true
+      },
+      {
+        path: '/course/:courseId/vedio',
+        name: 'course-vedio',
+        component: () =>
+          import(
+            /* webpackChunkName: 'courseVedio' */ '@/views/course/vedio.vue'
+          ),
         props: true
       },
       {

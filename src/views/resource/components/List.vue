@@ -31,7 +31,17 @@
           </el-form-item>
         </el-form>
       </div>
-      <el-table :data="resources" style="width: 100%; margin-bottom: 20px" v-loading="isLoading">
+      <el-row class="toolbar">
+        <el-button>添加</el-button>
+        <el-button @click="$router.push({ name: 'resource-category' })"
+          >资源分类</el-button
+        >
+      </el-row>
+      <el-table
+        :data="resources"
+        style="width: 100%; margin-bottom: 20px"
+        v-loading="isLoading"
+      >
         <el-table-column type="index" label="编号" width="100" />
         <el-table-column prop="name" label="资源名称" width="180">
         </el-table-column>
@@ -138,7 +148,7 @@ export default Vue.extend({
     },
 
     onReset() {
-      (this.$refs.form as Form).resetFields()
+      ;(this.$refs.form as Form).resetFields()
       this.form.current = 1 // 重置回到第一页
       this.loadResources()
     }

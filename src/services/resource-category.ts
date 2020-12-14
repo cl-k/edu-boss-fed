@@ -10,3 +10,12 @@ export const getResourceCategories = () => {
     url: '/boss/resource/category/getAll'
   })
 }
+
+// 保存或更新资源分类
+export const saveOrUpdateCategory = (data: any) => {
+  return request({
+    method: 'POST',
+    url: '/boss/resource/category/saveOrderUpdate',
+    data
+  })
+}

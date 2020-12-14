@@ -84,6 +84,14 @@ const routes: Array<RouteConfig> = [
           )
       },
       {
+        path: '/resourceCategory',
+        name: 'resource-category',
+        component: () =>
+          import(
+            /* webpackChunkName: 'resourceCategory' */ '@/views/resource/category.vue'
+          )
+      },
+      {
         path: '/course',
         name: 'course',
         component: () =>

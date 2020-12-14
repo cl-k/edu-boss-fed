@@ -19,3 +19,11 @@ export const saveOrUpdateCategory = (data: any) => {
     data
   })
 }
+
+// 删除资源分类，如果资源分类下有资源，不允许删除
+export const deleteCategory = (id: number) => {
+  return request({
+    method: 'DELETE',
+    url: `/boss/resource/category/${id}`
+  })
+}

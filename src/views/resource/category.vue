@@ -43,7 +43,10 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import { getResourceCategories } from '@/services/resource-category'
+import {
+  getResourceCategories,
+  deleteCategory
+} from '@/services/resource-category'
 import moment from 'moment'
 import CreateOrEditCategory from './components/CreateOrEditCategory.vue'
 
@@ -84,7 +87,19 @@ export default Vue.extend({
     },
 
     handleDelete(item: any) {
-      console.log(item)
+      this.$confirm('确认删除吗？', '删除提示', {})
+        .then(async () => {
+          const { data } = await deleteCategory(item.id)
+          // if (data.code === '000000') {
+          this.$message.success('删除成功')
+          this.loadResourceCategories() // 更新数据列表
+          // }
+        })
+        .catch(err => {
+          console.log(err)
+          // 取消执行这里
+          this.$message.info('已取消删除')
+        })
     },
 
     onSuccess() {

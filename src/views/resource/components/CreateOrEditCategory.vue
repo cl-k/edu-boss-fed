@@ -20,16 +20,19 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import { saveOrUpdateCategory } from '@/services/resource-category'
+import {
+  saveOrUpdateCategory
+} from '@/services/resource-category'
 
 export default Vue.extend({
   name: 'CrateOrEditCategory',
-  data() {
-    return {
-      category: {
-        name: '',
-        sort: 0
-      }
+  props: {
+    isEdit: {
+      type: Boolean,
+      default: false
+    },
+    category: {
+      type: Object
     }
   },
   methods: {

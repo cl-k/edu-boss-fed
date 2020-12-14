@@ -32,6 +32,8 @@
     >
       <create-or-edit-category
         v-if="dialogVisible"
+        :category="currenCategory"
+        :is-edit="isEdit"
         @success="onSuccess"
         @cancel="dialogVisible = false"
       />
@@ -54,7 +56,11 @@ export default Vue.extend({
     return {
       categories: [] as any,
       isEdit: false,
-      dialogVisible: false
+      dialogVisible: false,
+      currenCategory: {
+        name: '',
+        sort: 0
+      }
     }
   },
   created() {
@@ -71,8 +77,10 @@ export default Vue.extend({
       })
     },
 
-    handleEdit(item: any) {
-      console.log(item)
+    handleEdit(category: any) {
+      this.dialogVisible = true
+      this.currenCategory = Object.assign({}, category)
+      this.isEdit = true
     },
 
     handleDelete(item: any) {
@@ -81,6 +89,11 @@ export default Vue.extend({
 
     onSuccess() {
       this.dialogVisible = false
+      this.isEdit = false
+      this.currenCategory = {
+        name: '',
+        sort: 0
+      }
       this.loadResourceCategories()
     }
   }
